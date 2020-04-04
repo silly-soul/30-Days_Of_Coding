@@ -6,10 +6,13 @@
  * flags    : -std=c++11
  */
 
-/*Given a non-empty array of integers, every element appears twice except for one. Find that single one.
+/*Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
 
-Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+Example:
 
+Input: [-2,1,-3,4,-1,2,1,-5,4],
+Output: 6
+Explanation: [4,-1,2,1] has the largest sum = 6.
 */
 
 #include<bits/stdc++.h>
@@ -18,51 +21,41 @@ using namespace std;
 class  Solution
 {
 public:
-    //O(n)--doesn't work with negative numbers only.
-    int maxSubArray(vector<int>& nums)
-    {
-        int cs=0,ms=0;
+    //O(n)--Kadane's Algo. -4ms
+      int maxSubArray(vector<int>& nums)
+      {
+          int cs=0,ms=0;
 
-        for(int i=0; i<nums.size(); i++)
-        {
+          for(auto i:nums)
+          {
 
-            cs+=nums[i];
-            if(cs<0)
-            {
-                cs=0;
-            }
-            ms=max(cs,ms);
-        }
-        return ms;
-    }
+              cs+=nums[i];
+              ms=max(cs,ms);
+              if(cs<0)
+              {
+                  cs=0;
+              }
 
-    //O(n^2) 12ms --PreComputing
+          }
+          return ms;
+      }
+
+    //O(n^2) 12ms --PreComputing--BruteForce
     int maxSubArray(vector<int>& nums)
     {
         int maxSum=INT_MIN;
-        int curr_sum=0;
-        vector<int> V;
-        V.push_back(nums[0]);
-        for(int i=1; i<nums.size(); i++)
+        for (int i=0; i<nums.size();i++)
         {
-            V.push_back(V[i-1]+nums[i]);
-        }
-        for (int i = 0; i < nums.size(); i++)
-        {
+            int curr_sum=0;
             for (int j = i; j < nums.size(); j++)
             {
-                curr_sum=V[j]-V[i-1];
+                curr_sum+=nums[j];
+                if (curr_sum > maxSum)
+                    maxSum = curr_sum;
             }
-
-            if(maxSum<curr_sum)
-            {
-                maxSum=curr_sum;
-
-            }
-
 
         }
-        cout<< maxSum;
+        cout << maxSum;
     }
 
     /*
