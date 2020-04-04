@@ -21,7 +21,7 @@ using namespace std;
 class  Solution
 {
 public:
-    //O(n)--Kadane's Algo. -4ms
+    //O(n) Time and O(1)-Space--Kadane's Algo. -4ms
       int maxSubArray(vector<int>& nums)
       {
           int cs=0,ms=0;
@@ -40,7 +40,26 @@ public:
           return ms;
       }
 
-    //O(n^2) 12ms --PreComputing--BruteForce
+     //O(n)--Time and Space-- 4ms --PreComputing--cumulative Sum
+    int maxSubArray(vector<int>& nums)
+    {
+        int n=nums.size();
+        int maxSum=INT_MIN;
+        int curr_sum=0;
+        vector<int> V(n);
+        for(int i=0; i<n; ++i)
+        {
+            V[i]=nums[i]+ (i==0 ? 0 : V[i-1]);
+        }
+        for (int j = 0; j < n; j++)
+        {
+            maxSum=max(maxSum,V[j]-curr_sum);
+            curr_sum=min(curr_sum,V[j]);
+        }
+        cout<< maxSum;
+    }
+
+    //O(n^2) 12ms --BruteForce
     int maxSubArray(vector<int>& nums)
     {
         int maxSum=INT_MIN;
